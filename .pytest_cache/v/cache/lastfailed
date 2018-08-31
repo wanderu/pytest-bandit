@@ -1,0 +1,5 @@
+{
+  "pytest_bandit/utils.py": true,
+  "src/pytest_bandit/config.py": true,
+  "src/pytest_bandit/plugin.py": true
+}

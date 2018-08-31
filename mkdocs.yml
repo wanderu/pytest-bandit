@@ -1,0 +1,10 @@
+site_name: pytest-bandit
+site_description: A bandit plugin for pytest
+site_author: Matthew Warren
+
+theme: readthedocs
+
+repo_url: https://github.com/mattwwarren/pytest-bandit
+
+pages:
+- Home: index.md

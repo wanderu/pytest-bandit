@@ -1,0 +1,11 @@
+[
+  "setup.py",
+  "pytest_bandit/__init__.py",
+  "pytest_bandit/controller.py",
+  "pytest_bandit/errors.py",
+  "pytest_bandit/plugin.py",
+  "tests/conftest.py",
+  "tests/test_bandit.py",
+  "tests/test_bandit.py::test_help_message",
+  "tests/test_bandit.py::test_hello_ini_setting"
+]
