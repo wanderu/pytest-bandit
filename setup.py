@@ -21,7 +21,7 @@ setup(
     maintainer='Matthew Warren',
     maintainer_email='mwarren@wanderu.com',
     license='MIT',
-    url='https://github.com/mattwwarren/pytest-bandit',
+    url='https://github.com/Wanderu/pytest-bandit',
     description='A bandit plugin for pytest',
     long_description=read('README.rst'),
     packages=find_packages(exclude=['tests']),
