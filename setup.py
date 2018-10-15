@@ -15,7 +15,7 @@ def read(fname):
 
 setup(
     name='pytest-bandit',
-    version='0.1.0',
+    version='0.1.1',
     author='Wanderu',
     author_email='oss@wanderu.com',
     maintainer='Matthew Warren',
