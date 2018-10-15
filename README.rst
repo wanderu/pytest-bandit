@@ -10,13 +10,9 @@ pytest-bandit
     :target: https://pypi.org/project/pytest-bandit
     :alt: Python versions
 
-.. image:: https://travis-ci.org/mattwwarren/pytest-bandit.svg?branch=master
-    :target: https://travis-ci.org/mattwwarren/pytest-bandit
+.. image:: https://travis-ci.org/Wanderu/pytest-bandit.svg?branch=master
+    :target: https://travis-ci.org/Wanderu/pytest-bandit
     :alt: See Build Status on Travis CI
-
-.. image:: https://ci.appveyor.com/api/projects/status/github/mattwwarren/pytest-bandit?branch=master
-    :target: https://ci.appveyor.com/project/mattwwarren/pytest-bandit/branch/master
-    :alt: See Build Status on AppVeyor
 
 A bandit plugin for pytest
 
@@ -74,7 +70,7 @@ If you encounter any problems, please `file an issue`_ along with a detailed des
 .. _`GNU GPL v3.0`: http://www.gnu.org/licenses/gpl-3.0.txt
 .. _`Apache Software License 2.0`: http://www.apache.org/licenses/LICENSE-2.0
 .. _`cookiecutter-pytest-plugin`: https://github.com/pytest-dev/cookiecutter-pytest-plugin
-.. _`file an issue`: https://github.com/mattwwarren/pytest-bandit/issues
+.. _`file an issue`: https://github.com/Wanderu/pytest-bandit/issues
 .. _`pytest`: https://github.com/pytest-dev/pytest
 .. _`bandit`: https://github.com/PyCQA/bandit
 .. _`tox`: https://tox.readthedocs.io/en/latest/
