@@ -9,6 +9,7 @@ from pytest_bandit.errors import BanditError
 bandit_config_params = []
 
 LOG = logging.getLogger(__name__)
+LOG.setLevel(logging.INFO)
 
 
 class BanditItem(pytest.Item):
@@ -29,21 +30,23 @@ class BanditItem(pytest.Item):
         b_conf = BanditConfig()
         b_mgr = BanditManager(b_conf,
                               self.config.getini('bandit_aggregate_by'),
-                              self.config.getini('bandit_debug'),
+                              debug=self.config.getini('bandit_debug'),
                               profile=self.config.getini('bandit_profile'),
                               verbose=self.config.getini('bandit_verbose'),
                               ignore_nosec=self.config.getini('bandit_ignore_nosec'))
         b_mgr.discover_files(self.config.getini('bandit_targets'),
                              self.config.getini('bandit_recurse'),
                              self.config.getini('bandit_exclude'))
+
+        if not b_mgr.b_ts.tests:
+            LOG.error('No tests would be run, please check your targets and add recurse')
+            return 5
+
         b_mgr.run_tests()
 
-        LOG.debug(b_mgr.b_ma)
-        LOG.debug(b_mgr.metrics)
-
         # trigger output of results by Bandit Manager
-        sev_level = constants.RANKING[self.config.getini('bandit_sev_level') - 1]
-        conf_level = constants.RANKING[self.config.getini('bandit_conf_level') - 1]
+        sev_level = constants.RANKING[int(self.config.getini('bandit_sev_level'))]
+        conf_level = constants.RANKING[int(self.config.getini('bandit_conf_level'))]
         sys.stdout = sys.__stdout__
         b_mgr.output_results(self.config.getini('bandit_context_lines'),
                              sev_level,
@@ -52,16 +55,18 @@ class BanditItem(pytest.Item):
                              'screen')
 
         # return an exit code of 1 if there are results, 0 otherwise
+        LOG.debug(sev_level)
+        LOG.debug(conf_level)
         if b_mgr.results_count(sev_filter=sev_level, conf_filter=conf_level) > 0:
             return 1
-        else:
-            return 0
+
+        return 0
 
     def repr_failure(self, excinfo):
         if excinfo.errisinstance(BanditError):
             return excinfo.value.args[0]
-        else:
-            return super().repr_failure(excinfo)
+
+        return super().repr_failure(excinfo)
 
     def reportinfo(self):
         return self.fspath, None, 'bandit-check'

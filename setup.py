@@ -15,7 +15,7 @@ def read(fname):
 
 setup(
     name='pytest-bandit',
-    version='0.2.0',
+    version='0.3.0',
     author='Wanderu',
     author_email='oss@wanderu.com',
     maintainer='Matthew Warren',
@@ -36,14 +36,11 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
         'Operating System :: OS Independent',
         'License :: OSI Approved :: MIT License',
     ],
