@@ -1,4 +1,5 @@
 import logging
+import os
 import pytest
 import sys
 from bandit.core.config import BanditConfig
@@ -48,6 +49,8 @@ class BanditItem(pytest.Item):
         sev_level = constants.RANKING[int(self.config.getini('bandit_sev_level'))]
         conf_level = constants.RANKING[int(self.config.getini('bandit_conf_level'))]
         sys.stdout = sys.__stdout__
+        # pytest doesn't terminate the last line before invoking `runtest`
+        sys.stdout.write(os.linesep)
         b_mgr.output_results(self.config.getini('bandit_context_lines'),
                              sev_level,
                              conf_level,
