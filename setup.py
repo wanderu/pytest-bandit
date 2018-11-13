@@ -3,8 +3,6 @@
 
 import os
 import codecs
-from glob import glob
-from os.path import splitext, basename
 from setuptools import setup, find_packages
 
 
@@ -15,7 +13,7 @@ def read(fname):
 
 setup(
     name='pytest-bandit',
-    version='0.3.0',
+    version='0.3.1',
     author='Wanderu',
     author_email='oss@wanderu.com',
     maintainer='Matthew Warren',
@@ -40,6 +38,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation :: CPython',
         'Operating System :: OS Independent',
         'License :: OSI Approved :: MIT License',
