@@ -4,6 +4,7 @@
 import os
 import codecs
 from setuptools import setup, find_packages
+from pytest_bandit import __version__
 
 
 def read(fname):
@@ -13,7 +14,7 @@ def read(fname):
 
 setup(
     name='pytest-bandit',
-    version='0.3.1',
+    version=__version__,
     author='Wanderu',
     author_email='oss@wanderu.com',
     maintainer='Matthew Warren',
