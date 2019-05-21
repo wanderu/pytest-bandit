@@ -37,7 +37,7 @@ class BanditItem(pytest.Item):
                               ignore_nosec=self.config.getini('bandit_ignore_nosec'))
         b_mgr.discover_files(self.config.getini('bandit_targets'),
                              self.config.getini('bandit_recurse'),
-                             self.config.getini('bandit_exclude'))
+                             ', '.join(self.config.getini('bandit_exclude')))
 
         if not b_mgr.b_ts.tests:
             LOG.error('No tests would be run, please check your targets and add recurse')
