@@ -15,10 +15,11 @@ LOG.setLevel(logging.INFO)
 
 class BanditItem(pytest.Item):
     CACHE_KEY = 'bandit/mtimes'
+    MARKER = 'bandit'
 
     def __init__(self, session):
         super().__init__('bandit', session)
-        self.add_marker('bandit')
+        self.add_marker(self.MARKER)
         self.config = session.config
 
     def setup(self):

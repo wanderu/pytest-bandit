@@ -121,6 +121,16 @@ def pytest_addoption(parser):
     )
 
 
+def pytest_configure(config):
+    """Register a custom marker for BanditItems."""
+    config.addinivalue_line(
+        'markers',
+        '{marker}: mark tests to be checked by bandit.'.format(
+            marker=BanditItem.MARKER,
+        ),
+    )
+
+
 try:
     from StringIO import StringIO
 except ImportError:
