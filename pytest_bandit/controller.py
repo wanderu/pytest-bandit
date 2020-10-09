@@ -29,6 +29,8 @@ class BanditItem(pytest.Item):
             pytest.skip('previously passed bandit checks')
 
     def runtest(self):
+        if not self.config.getoption('run_bandit', skip=True):
+            return 0
         b_conf = BanditConfig()
         b_mgr = BanditManager(b_conf,
                               self.config.getini('bandit_aggregate_by'),

@@ -180,7 +180,5 @@ def pytest_runtestloop(session):
     yield
     compat_session = SessionWrapper(session)
     bandit_failures = BanditItem(compat_session).runtest()
-    LOG.debug(compat_session.shouldfail)
     compat_session.testsfailed += bandit_failures
     compat_session.shouldfail = bool(bandit_failures)
-    LOG.debug(compat_session.shouldfail)
