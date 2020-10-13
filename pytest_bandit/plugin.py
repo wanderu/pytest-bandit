@@ -136,8 +136,6 @@ try:
 except ImportError:
     from io import StringIO
 
-import pytest
-
 StringIO  # pyflakes, this is for re-export
 
 
@@ -145,6 +143,7 @@ if hasattr(pytest, 'hookimpl'):
     hookwrapper = pytest.hookimpl(hookwrapper=True)
 else:
     hookwrapper = pytest.mark.hookwrapper
+
 
 class SessionWrapper(object):
     def __init__(self, session):
