@@ -47,10 +47,22 @@ Usage
 * add `bandit_targets` to your pytest configuration and add at least one directory to traverse
 * you probably want `bandit_recurse = true` in your configuration as well
 
+
+
 Contributing
 ------------
 Contributions are very welcome. Tests can be run with `tox`_, please ensure
 the coverage at least stays the same before you submit a pull request.
+
+
+Development setup & testing
+***************************
+
+    python -m venv .venv
+    source .venv/bin/activate
+    pip insatll tox
+    tox
+
 
 License
 -------
