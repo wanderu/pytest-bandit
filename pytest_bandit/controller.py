@@ -17,10 +17,15 @@ class BanditItem(pytest.Item):
     CACHE_KEY = 'bandit/mtimes'
     MARKER = 'bandit'
 
-    def __init__(self, session):
-        super().__init__('bandit', session)
-        self.add_marker(self.MARKER)
-        self.config = session.config
+    @classmethod
+    def from_parent(cls, parent, name, **kwargs):
+        super_ = super()
+        if hasattr(super_, "from_parent"):
+            new = super_.from_parent(parent=parent, name=name)
+        else:
+            new = super_(name, parent)
+            new.config = parent.config
+        return new
 
     def setup(self):
         old_mtime = self.config.cache.get(
