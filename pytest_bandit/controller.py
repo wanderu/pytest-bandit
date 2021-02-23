@@ -17,13 +17,22 @@ class BanditItem(pytest.Item):
     CACHE_KEY = 'bandit/mtimes'
     MARKER = 'bandit'
 
-    def __init__(self, session):
-        super().__init__('bandit', session)
-        self.add_marker(self.MARKER)
-        self.config = session.config
+    @classmethod
+    def from_parent(cls, parent, name, **kwargs):
+        super_ = super()
+        if hasattr(super_, "from_parent"):
+            new = super_.from_parent(parent=parent, name=name)
+        else:
+            new = super_(name, parent)
+            new.config = parent.config
+        return new
 
     def setup(self):
-        old_mtime = self.config.cache.get(self.CACHE_KEY, {}).get(str(self.fspath), -1)
+        old_mtime = self.config.cache.get(
+                self.CACHE_KEY, {}
+            ).get(
+                str(self.fspath), -1
+            )
         mtime = self.fspath.mtime()
         if old_mtime == mtime:
             pytest.skip('previously passed bandit checks')
@@ -32,25 +41,34 @@ class BanditItem(pytest.Item):
         if not self.config.getoption('run_bandit', skip=True):
             return 0
         b_conf = BanditConfig()
-        b_mgr = BanditManager(b_conf,
-                              self.config.getini('bandit_aggregate_by'),
-                              debug=self.config.getini('bandit_debug'),
-                              profile=self.config.getini('bandit_profile'),
-                              verbose=self.config.getini('bandit_verbose'),
-                              ignore_nosec=self.config.getini('bandit_ignore_nosec'))
-        b_mgr.discover_files(self.config.getini('bandit_targets'),
-                             self.config.getini('bandit_recurse'),
-                             ', '.join(self.config.getini('bandit_exclude')))
+        b_mgr = BanditManager(
+            b_conf,
+            self.config.getini('bandit_aggregate_by'),
+            debug=self.config.getini('bandit_debug'),
+            profile=self.config.getini('bandit_profile'),
+            verbose=self.config.getini('bandit_verbose'),
+            ignore_nosec=self.config.getini('bandit_ignore_nosec'))
+        b_mgr.discover_files(
+            self.config.getini('bandit_targets'),
+            self.config.getini('bandit_recurse'),
+            ', '.join(self.config.getini('bandit_exclude')))
 
         if not b_mgr.b_ts.tests:
-            LOG.error('No tests would be run, please check your targets and add recurse')
+            LOG.error(
+                'No tests would be run, please check your targets and add '
+                'recurse'
+            )
             return 5
 
         b_mgr.run_tests()
 
         # trigger output of results by Bandit Manager
-        sev_level = constants.RANKING[int(self.config.getini('bandit_sev_level'))]
-        conf_level = constants.RANKING[int(self.config.getini('bandit_conf_level'))]
+        sev_level = constants.RANKING[
+            int(self.config.getini('bandit_sev_level'))
+        ]
+        conf_level = constants.RANKING[
+            int(self.config.getini('bandit_conf_level'))
+        ]
         sys.stdout = sys.__stdout__
         # pytest doesn't terminate the last line before invoking `runtest`
         sys.stdout.write(os.linesep)
@@ -63,7 +81,9 @@ class BanditItem(pytest.Item):
         # return an exit code of 1 if there are results, 0 otherwise
         LOG.debug(sev_level)
         LOG.debug(conf_level)
-        if b_mgr.results_count(sev_filter=sev_level, conf_filter=conf_level) > 0:
+        if b_mgr.results_count(
+            sev_filter=sev_level, conf_filter=conf_level
+        ) > 0:
             return 1
 
         return 0

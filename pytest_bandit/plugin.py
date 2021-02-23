@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
-import bandit
 import logging
-import py.io
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 import pytest
-import sys
 
 from pytest_bandit.controller import BanditItem
-from pytest_bandit.errors import BanditError
 
 logging.getLogger("bandit.core").setLevel(logging.WARNING)
 LOG = logging.getLogger(__name__)
+
+StringIO  # pyflakes, this is for re-export
 
 
 def pytest_addoption(parser):
@@ -47,7 +50,10 @@ def pytest_addoption(parser):
     parser.addini(
         'bandit_config',
         type='args',
-        help='Optional config file to use for selecting plugins and overriding defaults'
+        help=(
+            'Optional config file to use for selecting plugins and overriding '
+            'defaults'
+        )
     )
     parser.addini(
         'bandit_profile',
@@ -68,12 +74,18 @@ def pytest_addoption(parser):
     parser.addini(
         'bandit_sev_level',
         default=1,
-        help='Report only issues of a given severity level or higher (1 = LOW, 2 = MEDIUM, 3 = HIGH)'
+        help=(
+            'Report only issues of a given severity level or higher '
+            '(1 = LOW, 2 = MEDIUM, 3 = HIGH)'
+        )
     )
     parser.addini(
         'bandit_conf_level',
         default=1,
-        help='Report only issues of a given confidence level or higher (1 = LOW, 2 = MEDIUM, 3 = HIGH)'
+        help=(
+            'Report only issues of a given confidence level or higher '
+            '(1 = LOW, 2 = MEDIUM, 3 = HIGH)'
+        )
     )
     parser.addini(
         'bandit_output_format',
@@ -84,8 +96,11 @@ def pytest_addoption(parser):
     parser.addini(
         'bandit_msg_template',
         type='args',
-        help='(CURRENTLY NOT IMPLEMENTED) Specify output message template (only usable with --format custom), \
-              see CUSTOM FORMAT section for list of available values'
+        help=(
+            '(CURRENTLY NOT IMPLEMENTED) Specify output message template '
+            '(only usable with --format custom), see CUSTOM FORMAT section '
+            'for list of available values'
+        )
     )
     parser.addini(
         'bandit_verbose',
@@ -112,7 +127,10 @@ def pytest_addoption(parser):
     parser.addini(
         'bandit_baseline',
         type='args',
-        help='Path of baseline report to compare against (only JSON-formatted files are accepted)'
+        help=(
+            'Path of baseline report to compare against (only JSON-formatted '
+            'files are accepted)'
+        )
     )
     parser.addini(
         'bandit_ini',
@@ -129,14 +147,6 @@ def pytest_configure(config):
             marker=BanditItem.MARKER,
         ),
     )
-
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
-
-StringIO  # pyflakes, this is for re-export
 
 
 if hasattr(pytest, 'hookimpl'):
@@ -178,6 +188,8 @@ class SessionWrapper(object):
 def pytest_runtestloop(session):
     yield
     compat_session = SessionWrapper(session)
-    bandit_failures = BanditItem(compat_session).runtest()
+    bandit_failures = BanditItem.from_parent(
+        parent=session, name='bandit'
+    ).runtest()
     compat_session.testsfailed += bandit_failures
     compat_session.shouldfail = bool(bandit_failures)
