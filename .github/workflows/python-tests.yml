@@ -31,6 +31,6 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with tox
       env:
-        TOX_ENV=py${{ matrix.python-version }}-pytest{{ matrix.pytest-version }}
+        TOX_ENV=py${{ matrix.python-version }}-pytest${{ matrix.pytest-version }}
       run: |
         tox -r -e $TOX_ENV
