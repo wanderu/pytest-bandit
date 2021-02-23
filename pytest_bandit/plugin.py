@@ -191,7 +191,5 @@ def pytest_runtestloop(session):
     bandit_failures = BanditItem.from_parent(
         parent=session, name='bandit'
     ).runtest()
-    LOG.debug(compat_session.shouldfail)
     compat_session.testsfailed += bandit_failures
     compat_session.shouldfail = bool(bandit_failures)
-    LOG.debug(compat_session.shouldfail)
