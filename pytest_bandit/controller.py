@@ -70,11 +70,18 @@ class BanditItem(pytest.Item):
         sys.stdout = sys.__stdout__
         # pytest doesn't terminate the last line before invoking `runtest`
         sys.stdout.write(os.linesep)
-        b_mgr.output_results(self.config.getini('bandit_context_lines'),
-                             sev_level,
-                             conf_level,
-                             sys.stdout,
-                             'screen')
+
+        outputs = zip(
+            list(self.config.getini('bandit_output_formats')),
+            list(self.config.getini('bandit_output_files')))
+
+        for (o_fmt, o_file) in outputs:
+            o_file = open(o_file, 'w') if o_file != "screen" else sys.stdout
+            b_mgr.output_results(self.config.getini('bandit_context_lines'),
+                                 sev_level,
+                                 conf_level,
+                                 o_file,
+                                 o_fmt)
 
         # return an exit code of 1 if there are results, 0 otherwise
         LOG.debug(sev_level)

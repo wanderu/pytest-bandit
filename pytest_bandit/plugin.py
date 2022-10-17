@@ -88,10 +88,17 @@ def pytest_addoption(parser):
         )
     )
     parser.addini(
-        'bandit_output_format',
+        'bandit_output_formats',
         type='args',
-        default='screen',
-        help='(CURRENTLY NOT IMPLEMENTED) Specify output format'
+        default=('screen',),
+        help='Specify output formats'
+    )
+    parser.addini(
+        'bandit_output_files',
+        type='args',
+        default=('screen',),
+        help=('Specify output files. Must be a file for each specified format'
+              'in the same order.')
     )
     parser.addini(
         'bandit_msg_template',
